@@ -1,0 +1,68 @@
+{
+  "model_name": "KMeans_Acoustic_Segmentation",
+  "selected_k": 6,
+  "features_used": [
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "duration_ms"
+  ],
+  "dataset_type": "Observation-Level (spotify_songs_cleaned.csv)",
+  "total_observations": 32833,
+  "unique_tracks": 28356,
+  "random_state": 42,
+  "inertia": 203541.4,
+  "silhouette_score": 0.138,
+  "davies_bouldin_index": 1.735,
+  "calinski_harabasz_index": 4025.16,
+  "pca_explained_variance_ratio": [
+    0.2152,
+    0.1545
+  ],
+  "pca_total_variance_explained": 0.3697,
+  "cluster_archetypes": {
+    "0": {
+      "name": "High-Octane Anthem",
+      "subtitle": "Driving Rock & Peak-Time EDM",
+      "description": "Aggressive dynamic intensity, maximal master loudness, driving driving rhythm.",
+      "color": "#55D99A"
+    },
+    "1": {
+      "name": "Instrumental Synth Wave",
+      "subtitle": "Club, Tech & Progressive Electronic",
+      "description": "Heavy synthesizer instrumentation, extended progressive mixes, absent vocals.",
+      "color": "#5BC0BE"
+    },
+    "2": {
+      "name": "Live Concert & Stadium Arena",
+      "subtitle": "Stage Performance & Audience Ambience",
+      "description": "Elevated crowd presence, acoustic room reverb, dynamic stage energy.",
+      "color": "#E9B86C"
+    },
+    "3": {
+      "name": "Rhythmic Groove & Vibrant Pop",
+      "subtitle": "Latin Reggaeton, Dance Pop & Upbeat Funk",
+      "description": "Infectious syncopated rhythm, high harmonic positiveness, mid-tempo groove.",
+      "color": "#D97755"
+    },
+    "4": {
+      "name": "Lyrical Flow & Urban Hip-Hop",
+      "subtitle": "Rap, Trap & Spoken Cadence",
+      "description": "High spoken vocal density, rhythmic hip-hop and trap beat foundations.",
+      "color": "#708A81"
+    },
+    "5": {
+      "name": "Acoustic Intimacy & Mellow Soul",
+      "subtitle": "Organic Instrumentation & Downtempo Ballads",
+      "description": "Unamplified organic instruments, piano/guitar ballads, lower loudness.",
+      "color": "#9AA79F"
+    }
+  },
+  "created_at": "2026-11-06T17:44:26.790965"
+}
