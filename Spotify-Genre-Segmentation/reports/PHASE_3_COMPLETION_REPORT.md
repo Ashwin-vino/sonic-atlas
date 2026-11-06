@@ -117,3 +117,4 @@ Executed automated test suite:
 
 1. **Unsupervised Nature**: K-Means clusters data by acoustic geometry in continuous space. Discovered clusters do not map 1:1 with human social/cultural genre tags (e.g. Rock and EDM share loud anthemic clusters).
 2. **Phase Boundary**: No recommendation engine, nearest-neighbor matching, or Spotify API features were implemented. Those remain strictly reserved for Phase 4.
+

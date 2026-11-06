@@ -87,3 +87,4 @@ $$z_{ij} = \frac{x_{ij} - \mu_j}{\sigma_j}$$
 Repeated playlist appearances represent songs curated across multiple subgenres. The experimental comparison proves that repeated playlist appearances **do not distort** the cluster topology. Cluster centroids, feature distributions, and silhouette scores remain stable within 2.4% variance. 
 
 The primary platform presentation utilizes **Experiment A (32,833 observations)** to preserve playlist context, with seamless capability to view unique tracks.
+

@@ -84,3 +84,4 @@ Western chromatic pitch classes are discrete nominal categories. They are not co
 The following heatmaps have been rendered at 300 DPI:
 - [`reports/figures/correlation_matrix_pearson.png`](file:///Users/av/Documents/corizo%20Ai%20major%20project%20/Spotify-Genre-Segmentation/reports/figures/correlation_matrix_pearson.png)
 - [`reports/figures/correlation_matrix_spearman.png`](file:///Users/av/Documents/corizo%20Ai%20major%20project%20/Spotify-Genre-Segmentation/reports/figures/correlation_matrix_spearman.png)
+

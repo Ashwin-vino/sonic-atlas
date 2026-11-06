@@ -42,6 +42,22 @@ SCALER_PATH = MODELS_DIR / "feature_scaler.pkl"
 CLUSTERING_METADATA_PATH = MODELS_DIR / "clustering_metadata.json"
 CLUSTERED_DATA_PATH = PROCESSED_DATA_DIR / "spotify_songs_clustered.csv"
 
+# Serialized Phase 4 Recommendation Artifacts
+RECOMMENDATION_CATALOG_FILENAME = "spotify_songs_recommendation_catalog.csv"
+RECOMMENDATION_CATALOG_PATH = PROCESSED_DATA_DIR / RECOMMENDATION_CATALOG_FILENAME
+NEAREST_NEIGHBORS_MODEL_PATH = MODELS_DIR / "nearest_neighbors_model.pkl"
+RECOMMENDATION_METADATA_PATH = MODELS_DIR / "recommendation_metadata.json"
+
+RECOMMENDATION_MODES: Dict[str, str] = {
+    "acoustic_similar": "Acoustic Similar Tracks",
+    "acoustic_twins": "Acoustic Twins — Cross-Genre Discovery",
+    "same_archetype": "Same Sonic Archetype",
+    "explore_beyond": "Explore Beyond Your Cluster",
+}
+
+RECOMMENDATION_TOP_K_OPTIONS: List[int] = [5, 10, 15, 20]
+DEFAULT_CANDIDATE_POOL_SIZE: int = 250
+
 # ==============================================================================
 # 2. REPRODUCIBILITY & DATASET SCHEMA
 # ==============================================================================

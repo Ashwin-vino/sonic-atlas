@@ -86,3 +86,4 @@ The moderate alignment scores confirm that **acoustic anatomy transcends human c
 1. `models/kmeans_model.pkl`: Serialized `sklearn.cluster.KMeans` model instance ($K=6$).
 2. `models/feature_scaler.pkl`: Serialized `sklearn.preprocessing.StandardScaler` instance.
 3. `models/clustering_metadata.json`: Machine-readable metadata including hyperparameter records, metrics, timestamps, and archetype definitions.
+
