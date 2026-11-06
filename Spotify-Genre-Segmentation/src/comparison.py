@@ -516,3 +516,4 @@ def build_comparison_table(df_tracks: pd.DataFrame) -> pd.DataFrame:
         rows.append(make_row(display_label, vals))
 
     return pd.DataFrame(rows)
+

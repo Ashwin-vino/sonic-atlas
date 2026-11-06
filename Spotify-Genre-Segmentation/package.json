@@ -1,0 +1,24 @@
+{
+  "name": "sonic-atlas",
+  "version": "1.0.0",
+  "description": "SONIC ATLAS — Music Intelligence Platform",
+  "main": "app.py",
+  "scripts": {
+    "dev": "([ -f .venv/bin/streamlit ] && .venv/bin/streamlit run app.py) || ([ -f ../.venv/bin/streamlit ] && ../.venv/bin/streamlit run app.py) || streamlit run app.py",
+    "start": "npm run dev",
+    "test": "([ -f .venv/bin/python ] && .venv/bin/python -m unittest discover -s tests -p \"test_*.py\") || ([ -f ../.venv/bin/python ] && ../.venv/bin/python -m unittest discover -s tests -p \"test_*.py\") || python -m unittest discover -s tests -p \"test_*.py\"",
+    "presentation": "([ -f .venv/bin/python ] && .venv/bin/python src/generate_presentation.py) || ([ -f ../.venv/bin/python ] && ../.venv/bin/python src/generate_presentation.py) || python src/generate_presentation.py",
+    "docker:build": "docker build -t sonic-atlas:latest .",
+    "docker:run": "docker run -p 8501:8501 sonic-atlas:latest"
+  },
+  "keywords": [
+    "music-intelligence",
+    "spotify",
+    "machine-learning",
+    "clustering",
+    "recommendation-engine",
+    "streamlit"
+  ],
+  "author": "SONIC ATLAS Team",
+  "license": "MIT"
+}

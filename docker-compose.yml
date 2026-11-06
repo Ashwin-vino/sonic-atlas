@@ -16,3 +16,4 @@ services:
       retries: 3
     environment:
       - PYTHONUNBUFFERED=1
+
