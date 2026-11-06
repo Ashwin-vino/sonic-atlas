@@ -19,7 +19,7 @@ Modern music streaming catalogs house tens of millions of songs. However, tradit
 - Quantify what makes genres sonically distinct versus acoustically overlapping.
 - Model multi-attribute music similarity without relying on external collaborative filtering metadata.
 
-SONIC ATLAS solves this by leveraging acoustic feature vectors, unsupervised machine learning clustering, and vector similarity models to segment tracks based on raw musical properties.
+SONIC ATLAS solves this by leveraging acoustic feature vectors, unsupervised machine learning clustering, vector similarity models, geometric multi-track comparison, and playlist acoustic profiling to segment tracks based on raw musical properties.
 
 ---
 
@@ -27,9 +27,10 @@ SONIC ATLAS solves this by leveraging acoustic feature vectors, unsupervised mac
 
 1. **Empirical Dataset Audit & Cleaning**: Rigorously validate, clean, and profile 32,833 playlist observations with zero data loss.
 2. **Exploratory Acoustic Analysis**: Characterize audio feature distributions, skewness, moments, and cross-genre signatures.
-3. **Unsupervised Genre Segmentation**: Discover data-driven sonic clusters using K-Means and dimensionality reduction (PCA / t-SNE) without human labeling bias (Phase 3).
-4. **Content-Based Music Recommendation**: Formulate high-dimensional cosine similarity recommendations allowing users to find "acoustic twins" across catalog boundaries (Phase 4).
-5. **Production Analytical Interface**: Deliver a clean, editorial dark-mode interface with restrained green accents, responsive typography, and reactive analytics (Phases 1–5).
+3. **Unsupervised Genre Segmentation**: Discover data-driven sonic clusters using K-Means ($K=6$) and dimensionality reduction (PCA) without human labeling bias (Phase 3).
+4. **Content-Based Music Recommendation**: Formulate high-dimensional cosine similarity recommendations allowing users to find "acoustic twins" across catalog boundaries with sub-4ms retrieval latency (Phase 4).
+5. **Advanced Music Intelligence & Analytics**: Deliver a Multi-Track Comparison Studio, Playlist Acoustic Profiler, and Catalog Macro Analytics (Phase 5).
+6. **Production Deployment & Packaging**: Containerize with Docker, enforce zero external secret dependencies, and provide comprehensive evaluation decks and architectural documentation (Phase 5).
 
 ---
 
@@ -37,11 +38,13 @@ SONIC ATLAS solves this by leveraging acoustic feature vectors, unsupervised mac
 
 - **Core Language**: Python 3.9+
 - **Data Manipulation & Analytics**: Pandas (`>=2.0.0`), NumPy (`>=1.24.0`)
-- **Machine Learning & Modeling**: Scikit-Learn (`>=1.3.0`)
-- **Visualization Engines**: Matplotlib (`>=3.7.0`), Seaborn (`>=0.12.0`)
-- **Application Framework**: Streamlit (`>=1.28.0`)
-- **Design System**: Custom CSS incorporating Manrope (Headings), Inter (Body), and JetBrains Mono (Technical telemetry)
-- **Development & Versioning**: Jupyter Notebooks, Git
+- **Machine Learning & Modeling**: Scikit-Learn (`>=1.3.0`), SciPy (`>=1.11.0`)
+- **Visualization Engines**: Matplotlib (`>=3.8.0`), Seaborn (`>=0.13.0`), Altair (`>=5.0.0`)
+- **Application Framework**: Streamlit (`>=1.30.0`) with Custom Editorial CSS Tokens
+- **Presentation Deck Generation**: Python-pptx (`>=1.0.0`)
+- **Containerization & Deployment**: Docker (Python 3.9-slim), Docker Compose
+- **Design System**: Custom tokens incorporating Manrope (Headings), Inter (Body), and JetBrains Mono (Technical telemetry)
+- **Development & Testing**: Python Unittest (76 automated tests), Jupyter Notebooks, Git
 
 ---
 
@@ -54,10 +57,15 @@ SONIC-ATLAS/
 │   ├── raw/
 │   │   └── spotify_songs.csv           # Original dataset (32,833 records)
 │   │
-│   └── processed/
-│       ├── spotify_songs_cleaned.csv   # Cleaned dataset (32,833 observations, 0 nulls)
-│       ├── spotify_songs_clustered.csv # Clustered dataset with K=6 labels & 2D PCA
-│       └── spotify_songs_recommendation_catalog.csv # Unique-track catalog (28,356 compositions)
+│   ├── processed/
+│   │   ├── spotify_songs_cleaned.csv   # Cleaned dataset (32,833 observations, 0 nulls)
+│   │   ├── spotify_songs_clustered.csv # Clustered dataset with K=6 labels & 2D PCA
+│   │   └── spotify_songs_recommendation_catalog.csv # Unique-track catalog (28,356 compositions)
+│   │
+│   └── sample_playlists/               # Curated sample playlists for demonstration
+│       ├── sample_festival_edm.csv     # High-energy EDM festival sample
+│       ├── sample_acoustic_chill.csv   # Organic acoustic chill sample
+│       └── sample_tracklist_simple.csv # Simple title + artist tracklist sample
 │
 ├── notebooks/
 │   ├── 01_exploratory_data_analysis.ipynb # Complete 14-section Phase 2 EDA notebook
@@ -70,12 +78,16 @@ SONIC-ATLAS/
 │   ├── data_loader.py                  # Robust CSV ingestion, fallback path search & summary
 │   ├── preprocessing.py                # Cleaning pipeline, metadata fallbacks & validation
 │   ├── analysis.py                     # Statistical distributions, rankings & figures
-│   ├── correlation.py                  # (Phase 3) Pearson/Spearman collinearity & discrete analysis
-│   ├── clustering.py                   # (Phase 3) StandardScaler, K-Means (K=6), 2D PCA & profiling
-│   ├── evaluation.py                   # (Phase 3 & 4) Clustering & recommendation metrics
-│   └── recommender.py                  # (Phase 4) Cosine NearestNeighbors recommendation engine
+│   ├── correlation.py                  # Pearson/Spearman collinearity & discrete analysis
+│   ├── clustering.py                   # StandardScaler, K-Means (K=6), 2D PCA & profiling
+│   ├── evaluation.py                   # Clustering & recommendation benchmark metrics
+│   ├── recommender.py                  # Cosine NearestNeighbors recommendation engine
+│   ├── comparison.py                   # (Phase 5A) Multi-track radar & pairwise similarity
+│   ├── playlist_analyzer.py            # (Phase 5B) CSV upload, catalog matcher & profiling
+│   ├── catalog_intelligence.py         # (Phase 5C) Macro heatmaps, artist profiler & filtering
+│   └── generate_presentation.py        # (Phase 5F) Programmatic 18-slide PowerPoint generator
 │
-├── models/                             # Serialized Phase 3 & 4 ML Artifacts
+├── models/                             # Serialized ML Artifacts
 │   ├── kmeans_model.pkl                # Trained K-Means estimator (K=6, random_state=42)
 │   ├── feature_scaler.pkl              # Fitted StandardScaler (10 continuous audio features)
 │   ├── clustering_metadata.json        # Hyperparameters, evaluation scores & archetype specs
@@ -92,6 +104,11 @@ SONIC-ATLAS/
 │   ├── RECOMMENDATION_ENGINE_REPORT.md # Recommendation engine architecture & pipeline report
 │   ├── RECOMMENDATION_EVALUATION.md    # Recommendation benchmarks, coverage & diversity report
 │   ├── PHASE_4_COMPLETION_REPORT.md    # Formal Phase 4 audit & sign-off report
+│   ├── SYSTEM_ARCHITECTURE.md          # (Phase 5G) Complete 5-layer architectural blueprint
+│   ├── PROJECT_DEMONSTRATION_GUIDE.md  # (Phase 5F) Step-by-step evaluator presentation guide
+│   ├── SONIC_ATLAS_FINAL_PRESENTATION.pptx # (Phase 5F) Executive 18-slide dark deck
+│   ├── PHASE_5_COMPLETION_REPORT.md    # (Phase 5I) Formal Phase 5 completion report
+│   ├── SONIC_ATLAS_FINAL_PROJECT_REPORT.md # (Phase 5I) Comprehensive 5-phase project report
 │   └── figures/                        # 24 publication-quality 300 DPI visualizations
 │
 ├── tests/
@@ -101,22 +118,18 @@ SONIC-ATLAS/
 │   ├── test_analysis.py                # Phase 2 analytics & figures tests
 │   ├── test_correlation.py             # Phase 3 correlation & ranking tests
 │   ├── test_clustering.py              # Phase 3 K-Means, scaling, PCA & serialization tests
-│   └── test_recommender.py             # Phase 4 recommendation modes, filters, diversity & evaluation tests
+│   ├── test_recommender.py             # Phase 4 recommendation modes, filters & evaluation tests
+│   ├── test_comparison.py              # (Phase 5H) Multi-track radar & pairwise similarity tests
+│   ├── test_playlist_analyzer.py       # (Phase 5H) Playlist upload, matching & profiling tests
+│   └── test_catalog_intelligence.py    # (Phase 5H) Heatmaps, artist profiler & filtering tests
 │
-├── assets/
-│   ├── fonts/                          # Typography assets
-│   └── images/                         # Graphic assets
-│
-├── project-prompts/
-│   ├── 01-foundation.md                # Phase 1 master instructions
-│   ├── 02-preprocessing-eda.md         # Phase 2 master instructions
-│   ├── 03-correlation-clustering.md    # Phase 3 master instructions
-│   ├── 04-recommendation-engine.md     # Phase 4 master instructions
-│   └── 05-final-application.md         # Phase 5 master instructions
-│
-├── app.py                              # Streamlit application with Overview, Explorer, Genres, Insights & Clustering
-├── config.py                           # Root configuration proxy
+├── .streamlit/
+│   └── config.toml                     # Streamlit server config, max upload size & dark theme
+├── app.py                              # Unified Streamlit application (9 live production views)
 ├── requirements.txt                    # Pinned production dependencies
+├── Dockerfile                          # Multi-stage production container build
+├── docker-compose.yml                  # Local container orchestration
+├── .dockerignore                       # Container build exclusion rules
 ├── README.md                           # Documentation & platform guide
 └── .gitignore                          # Git exclusion rules
 ```
@@ -125,199 +138,135 @@ SONIC-ATLAS/
 
 ## 6. Preprocessing Methodology & Data Integrity Rules
 
-The preprocessing pipeline ([`src/preprocessing.py`](file:///Users/av/Documents/corizo%20Ai%20major%20project%20/Spotify-Genre-Segmentation/src/preprocessing.py)) executes strict, non-destructive transformations:
+The preprocessing pipeline ([`src/preprocessing.py`](file:///Users/av/Documents/corizo%20Ai%20major%20project/Spotify-Genre-Segmentation/src/preprocessing.py)) executes strict, non-destructive transformations:
 
 1. **Preserving Playlist Observations**:
-   - The 32,833 rows represent playlist-associated song observations.
+   - The 32,833 rows represent playlist-associated song observations across 449 playlists.
    - Repeated track IDs (4,477 occurrences) across different playlists are **preserved**, maintaining vital playlist context.
-   - Exact 23-column duplicate rows: **0**.
    - Cleaned observation rows: **32,833 (100% catalog retention)**.
-   - Unique composition view: A separate helper function (`create_unique_tracks_view()`) generates the 28,356 unique-track view for composition-only modeling.
+   - Cleaned unique track catalog: **28,356 unique compositions** deduplicated deterministically.
 
 2. **Non-Destructive Metadata Fallbacks**:
    - Exactly 5 records contained `NA` strings in `track_name`, `track_artist`, and `track_album_name`.
    - Records were **not deleted**. They received transparent display fallbacks (`"Unknown Track"`, `"Unknown Artist"`, `"Unknown Album"`).
-   - An audit column `metadata_imputed` flags these 5 records for complete data provenance.
 
-3. **Temporal Feature Extraction**:
-   - Extracted 4-digit `release_year` (Integer) from `track_album_release_date` (1957 to 2020, 100% parsed).
-
-4. **Duration Conversions**:
-   - Added `duration_sec` and `duration_min` alongside `duration_ms`.
-
-5. **Audio Feature Classification & Anti-Leakage Protection**:
+3. **Audio Feature Classification & Anti-Leakage Protection**:
    - **10 Continuous Features**: `danceability`, `energy`, `loudness`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, `valence`, `tempo`, `duration_ms`.
    - **2 Discrete Musical Features**: `key` (0 to 11), `mode` (0 or 1).
    - **Popularity Measure**: `track_popularity` is treated as a commercial metadata metric, not an acoustic feature.
-   - **Prohibited Clustering Inputs**: Ground-truth labels and identifiers (`playlist_genre`, `playlist_subgenre`, `playlist_name`, `playlist_id`, `track_id`, `track_name`, `track_artist`, `track_album_id`, `track_album_name`, `track_album_release_date`) are strictly isolated to prevent data leakage in Phase 3.
+   - **Prohibited Clustering Inputs**: Ground-truth labels and identifiers are strictly isolated to prevent circular data leakage.
 
 ---
 
-## 7. Exploratory Data Analysis (EDA) & Key Findings
+## 7. Machine Learning & The Six Sonic Archetypes
 
-1. **Taxonomic Balance**:
-   - 6 super genres: EDM (18.41%), Rap (17.50%), Pop (16.77%), R&B (16.54%), Latin (15.70%), Rock (15.08%).
-   - Exactly 4 balanced subgenres per super genre across 24 distinct classes.
-2. **Acoustic Signatures**:
-   - **EDM & Rock**: Highest perceived energy (means > 0.73).
-   - **Rap & Latin**: Highest danceability (means > 0.71).
-   - **Rap**: Uniquely high speechiness (mean = 0.198, median = 0.163).
-   - **R&B**: Highest acousticness (mean = 0.225).
-3. **Acoustic Collinearity**:
-   - Energy and Loudness exhibit a strong positive correlation ($r \approx 0.68$).
-4. **Temporal Evolution (1970–2020)**:
-   - Acousticness declined precipitously from ~0.35 in the 1970s to <0.15 by the 2010s, while average energy rose to a sustained peak of ~0.72.
+Unsupervised K-Means clustering ($K=6$, `random_state=42`) trained on the standardized 10-dimensional continuous space discovered six distinct musical personas:
 
----
-
-## 8. Phase 3 Machine Learning Clustering & Acoustic Topology
-
-### 1. Collinearity Analysis
-- **Strongest Positive Correlation**: `energy` and `loudness` ($r = +0.677$, $\rho = +0.656$).
-- **Strongest Negative Correlation**: `energy` and `acousticness` ($r = -0.540$, $\rho = -0.491$).
-- **Moderate Rhythmic Coupling**: `danceability` and `valence` ($r = +0.331$, $\rho = +0.331$).
-- **Discrete Independence**: Musical key (0–11) and modality (major/minor) exhibit negligible linear correlation with continuous features and are properly analyzed as discrete musical dimensions.
-
-### 2. Dataset Invariance: Experiment A vs. Experiment B
-- **Experiment A (32,833 observations)** vs. **Experiment B (28,356 unique tracks)**.
-- Maximum centroid delta across all 10 dimensions is **$< 2.4\%$**, and Silhouette scores match within $\pm 0.0006$ (0.1380 vs. 0.1386).
-- Confirms that preserving multi-playlist song occurrences does **not** distort the geometric cluster manifold.
-
-### 3. K-Means Model Selection ($K=6$)
-- **Inertia (Elbow Method)**: Sharp curvature inflection at $K=6$.
-- **Silhouette Score**: Optimal inflection point at $K=6$ ($0.1380$).
-- **Davies-Bouldin Index**: Reaches a distinct minimum at $K=6$ ($1.7350$).
-- **Calinski-Harabasz Index**: High dispersion ratio ($4,025.2$).
-
-### 4. 2D Principal Component Analysis (PCA)
-- **PC1 (21.52% Variance)**: Acoustic Intensity & Master Power (`loudness`, `energy` vs. `acousticness`).
-- **PC2 (15.45% Variance)**: Groove & Harmonic Positivity (`danceability`, `valence` vs. `tempo`).
-- **Total Variance Captured**: **36.97%** across 2 orthogonal dimensions.
-
-### 5. Six Discovered Sonic Archetypes
-1. **Cluster 0: High-Octane Anthem** (8,466 tracks, 25.8%, `#55D99A`) — Driving Rock & Peak-Time EDM. Loudest (-5.33 dB), fastest (132.6 BPM), energy (0.791).
-2. **Cluster 1: Instrumental Synth Wave** (2,470 tracks, 7.5%, `#5BC0BE`) — Club & Progressive Tech. Instrumentalness (0.746), extended duration (252.1s).
+1. **Cluster 0: High-Octane Anthem** (8,466 tracks, 25.8%, `#55D99A`) — Driving Rock & Festival EDM. Loudest (-5.33 dB), fastest (132.6 BPM), energy (0.791).
+2. **Cluster 1: Instrumental Synth Wave** (2,470 tracks, 7.5%, `#5BC0BE`) — Club & Progressive Electronic. Instrumentalness (0.746), extended duration (252.1s).
 3. **Cluster 2: Live Concert & Stadium Arena** (2,128 tracks, 6.5%, `#E9B86C`) — Stage Performance. Elevated liveness (0.614), energy (0.780).
-4. **Cluster 3: Rhythmic Groove & Vibrant Pop** (10,762 tracks, 32.8%, `#D97755`) — Latin Reggaeton & Dance Pop. Danceability (0.740), valence (0.680).
-5. **Cluster 4: Lyrical Flow & Urban Hip-Hop** (4,327 tracks, 13.2%, `#708A81`) — Rap, Trap & Spoken Cadence. Speechiness (0.313), danceability (0.726).
-6. **Cluster 5: Acoustic Intimacy & Mellow Soul** (4,680 tracks, 14.3%, `#9AA79F`) — Organic Ballads & Ambient Soul. Acousticness (0.519), softest (-10.5 dB).
-
-### 6. Anti-Leakage & Post-Hoc Alignment
-- Ground-truth genre labels were withheld during clustering.
-- Post-hoc alignment yields Adjusted Rand Index ($\text{ARI} = 0.1345$) and Cluster Purity ($0.4284$). This objectively demonstrates that unsupervised clustering grouped songs by **sonic texture rather than memorizing genre tags**, discovering genuine cross-genre affinities.
+4. **Cluster 3: Rhythmic Groove & Vibrant Pop** (6,778 tracks, 20.6%, `#D97755`) — Dance Pop & Latin Reggaeton. Danceability (0.740), valence (0.680).
+5. **Cluster 4: Lyrical Flow & Urban Hip-Hop** (5,765 tracks, 17.6%, `#708A81`) — Rap, Trap & Spoken Cadence. Speechiness (0.313).
+6. **Cluster 5: Acoustic Intimacy & Mellow Soul** (7,226 tracks, 22.0%, `#9AA79F`) — Organic Folk & Downtempo Ballads. Acousticness (0.519), soft loudness (-10.5 dB).
 
 ---
 
-## 9. Publication-Quality Visualizations (`reports/figures/`)
+## 8. Content-Based Recommendation Engine
 
-Generated by [`src/analysis.py`](file:///Users/av/Documents/corizo%20Ai%20major%20project%20/Spotify-Genre-Segmentation/src/analysis.py), [`src/correlation.py`](file:///Users/av/Documents/corizo%20Ai%20major%20project%20/Spotify-Genre-Segmentation/src/correlation.py), and [`src/clustering.py`](file:///Users/av/Documents/corizo%20Ai%20major%20project%20/Spotify-Genre-Segmentation/src/clustering.py) at 300 DPI:
-
-### Phase 2: Exploratory Data Analysis
-- `genre_distribution.png`: Dual-panel bar and donut chart illustrating super genre proportions.
-- `songs_per_genre.png`: Standalone observation counts across super genres.
-- `songs_per_subgenre.png`: Horizontal bar chart of all 24 subgenres, color-coded by genre.
-- `genre_popularity_distribution.png`: Boxplot and mean bar chart analyzing popularity by genre.
-- `top_artists.png`: Top 15 most represented recording artists in the catalog.
-- `artist_popularity_distribution.png`: Observation counts vs average artist popularity.
-- `top_playlists.png`: Top 12 curated playlists by track count.
-- `audio_feature_distributions.png`: 3x3 histogram grid with KDEs, means, and medians for 9 continuous features.
-- `genre_audio_features_comparison.png`: 2x3 boxplot matrix comparing Danceability, Energy, Valence, Acousticness, Speechiness, and Tempo across genres.
-- `danceability_vs_energy.png`: Stratified scatter plot showing genre segregation across rhythm and intensity.
-- `energy_vs_loudness.png`: Collinearity scatter plot illustrating energy vs mastering loudness.
-- `valence_vs_energy.png`: Musical positiveness vs intensity scatter plot.
-- `release_year_trends.png`: Temporal progression of acoustic properties from 1970 to 2020.
-- `missing_values_audit.png`: Data completeness chart confirming 99.98% completeness.
-
-### Phase 3: Correlation & Machine Learning Clustering
-- `correlation_matrix_pearson.png`: 10x10 annotated heatmap of linear Pearson correlations.
-- `correlation_matrix_spearman.png`: 10x10 annotated heatmap of rank-order Spearman correlations.
-- `kmeans_elbow_curve.png`: Inertia curve across $K \in [2, 12]$ showing inflection at $K=6$.
-- `silhouette_scores.png`: Silhouette curve across $K \in [2, 12]$ peaking at $K=6$ ($0.1380$).
-- `davies_bouldin_scores.png`: Davies-Bouldin index minimizing at $K=6$ ($1.7350$).
-- `calinski_harabasz_scores.png`: Calinski-Harabasz index showing strong separation at $K=6$ ($4,025.2$).
-- `cluster_visualization_pca.png`: 2D PCA scatter plot showing the 6 cluster archetypes and centroids.
-- `cluster_feature_profiles.png`: 2x3 grid of horizontal bar charts profiling the 10 features for each archetype.
-- `cluster_genre_distribution.png`: 100% stacked bar chart revealing post-hoc genre crossover per cluster.
-- `cluster_size_distribution.png`: Bar chart of observation counts across all 6 clusters.
+- **Model**: `NearestNeighbors(metric='cosine', algorithm='brute')` fitted on 28,356 unique compositions.
+- **Latency**: Sub-4ms candidate querying; <0.05ms precomputed normalized vector fallback.
+- **Four Core Recommendation Modes**:
+  1. *Acoustic Similar Tracks* (Default, $\overline{\text{Sim}} = 0.9377$, 57.3% natural cross-genre matches).
+  2. *Acoustic Twins — Cross-Genre Discovery* (Excludes seed genre, $\overline{\text{Sim}} = 0.9245$, 100.0% cross-genre rate).
+  3. *Same Sonic Archetype* (Pins to seed cluster, $\overline{\text{Sim}} = 0.9338$, 100% cluster purity).
+  4. *Explore Beyond Your Cluster* (Excludes seed cluster, $\overline{\text{Sim}} = 0.8677$, 62.6% cross-genre rate).
+- **Diversity-Aware Reranking**: *Balanced Discovery* mode achieves **100% unique artists** with only a negligible $0.0012$ similarity penalty.
 
 ---
 
-## 10. Phase 4 Content-Based Music Recommendation Engine
+## 9. Advanced Music Intelligence (Phase 5 Modules)
 
-### 1. High-Dimensional Cosine Similarity Engine
-- **Vector Space**: 10 continuous standardized audio features (danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration_ms) scaled with the Phase 3 `StandardScaler`.
-- **Zero Collaborative Filtering**: Purely content-driven, eliminating cold-start barriers, tracking history requirements, and commercial popularity bias.
-- **Index Architecture**: `NearestNeighbors(metric='cosine', algorithm='brute')` indexing 28,356 unique tracks with sub-5ms query latency.
+### A. Track Comparison Studio (`src/comparison.py`)
+- Allows users to select between 2 and 5 tracks from the 28,356 unique catalog.
+- Renders multi-track polar radar charts across normalized continuous audio dimensions.
+- Computes exact pairwise cosine similarity matrix in standardized 10D space.
+- Generates grouped feature comparison bar charts in raw, interpretable measurements (dB, BPM, ms).
+- Produces dynamic, purely empirical data-grounded comparative insights.
 
-### 2. Four Recommendation Modes
-1. **Acoustic Similar Tracks (Default)**: Uncovers the closest acoustic neighbors across the full catalog ($\overline{\text{Sim}} = 0.9377$).
-2. **Acoustic Twins — Cross-Genre Discovery**: Strictly excludes the seed track's super genre, returning acoustically identical compositions from other genres ($\overline{\text{Sim}} = 0.9245$, Cross-Genre Rate $= 100.0\%$).
-3. **Same Sonic Archetype**: Restricts recommendations strictly within the seed track's Phase 3 cluster ($\overline{\text{Sim}} = 0.9338$).
-4. **Explore Beyond Your Cluster**: Discovers nearby acoustic territories in adjacent cluster personas ($\overline{\text{Sim}} = 0.8677$, Cross-Genre Rate $= 62.65\%$).
+### B. Playlist Intelligence (`src/playlist_analyzer.py`)
+- Supports dual CSV upload: **Input A** (dataset-compatible with audio features) and **Input B** (tracklists with track names and artists).
+- Strictly validates file size ($\le 10$ MB), encoding, readability, and schema in isolated memory.
+- Matches uploaded tracks against the local 28,356 catalog with zero external API calls.
+- Classifies empirical playlist identities (e.g. *High-Octane Mainstage*, *Dancefloor Rhythm & Groove*, *Acoustic Intimacy*).
+- Calculates mathematical diversity metrics: Artist Diversity, Genre Diversity (Simpson), Cluster Entropy, and Acoustic Variance.
+- *Discover Tracks for This Playlist*: Recommends fresh tracks matching the playlist centroid while strictly excluding existing songs.
+- 1-click export of Summary CSV, Matched Tracks CSV, Unmatched CSV, and Profile JSON.
 
-### 3. Diversity-Aware Reranking (Balanced Discovery)
-- Deterministic greedy reranking ensures **100% unique recording artists** in recommendation lists with a negligible similarity difference of only $\Delta = 0.0012$ ($0.9377 \rightarrow 0.9365$).
-
-### 4. Grounded Acoustic Explanation Engine
-- Analyzes directional audio-feature deltas between seed and recommended tracks, explaining energy alignment, rhythmic synchronization, acoustic depth, and genre transitions.
+### C. Catalog Intelligence (`src/catalog_intelligence.py`)
+- Super Genre to Sonic Archetype topological mapping heatmap (6 Genres $\times$ 6 Clusters).
+- Pairwise genre acoustic proximity heatmap.
+- Cluster popularity boxplot distribution.
+- Recording Artist Acoustic Profiler: Search any of the 10,692 artists to inspect unique tracks, playlist appearances, dominant archetype, and radar comparison against catalog baseline.
+- Multi-dimensional catalog filtering workspace with CSV export.
 
 ---
 
-## 11. Installation & Setup
+## 10. Unified Streamlit Application (9 Production Views)
 
-### 1. Activate Virtual Environment
+Run `streamlit run app.py` to access the full platform:
+
+1. **Overview**: Executive dashboard, 5-phase status badges, dataset KPI cards, and platform architecture scorecard.
+2. **Music Explorer**: Interactive 10D feature distributions, KDE histograms, box plots, and scatter plots.
+3. **Genre Analysis**: Super-genre acoustic radar comparisons, genre distributions, and 24-subgenre taxonomy breakdown.
+4. **Data Insights**: Temporal release date trends, top artist distributions, and curated playlist composition.
+5. **Cluster Intelligence**: The Six Discovered Sonic Archetypes, interactive 2D/3D PCA projection scatter, and radar profiles.
+6. **Recommendations**: Content-based recommendation studio with search autocomplete, 4 recommendation modes, hybrid filters, and directional explanations.
+7. **Track Comparison**: Multi-track comparison studio (2–5 songs), polar radar geometry, pairwise cosine similarity matrix, and data-grounded insights.
+8. **Playlist Intelligence**: Playlist CSV upload validation (Input A vs Input B), local catalog matching, empirical persona classifier, radar vs baseline, and playlist-level track recommendations.
+9. **Catalog Intelligence**: Macro genre-to-cluster topological heatmaps, pairwise genre acoustic proximity, artist acoustic inspector, and multi-dimensional catalog filtering workspace.
+
+---
+
+## 11. Installation & Production Setup
+
+### 1. Local Virtual Environment Setup
 ```bash
-# macOS / Linux
-source .venv/bin/activate
+# Clone repository
+git clone https://github.com/example/spotify-genre-segmentation.git
+cd spotify-genre-segmentation
 
-# Windows
-.venv\Scripts\activate
-```
+# Activate virtual environment
+source .venv/bin/activate   # macOS / Linux
+# .venv\Scripts\activate    # Windows
 
-### 2. Install Dependencies
-```bash
+# Install pinned dependencies
 pip install -r requirements.txt
 ```
 
-### 3. Run Preprocessing Pipeline
-```bash
-python src/preprocessing.py
-```
-
-### 4. Run EDA & Analytics Figures
-```bash
-python src/analysis.py
-```
-
-### 5. Run Correlation Pipeline
-```bash
-python src/correlation.py
-```
-
-### 6. Run Clustering & Machine Learning Pipeline
-```bash
-python src/clustering.py
-```
-
-### 7. Run Recommendation Engine Pipeline
-```bash
-python src/recommender.py
-```
-
-### 8. Run Complete Automated Test Suite (44 Tests)
+### 2. Run Complete Automated Test Suite (76 Tests)
 ```bash
 python -m unittest discover -s tests -p "test_*.py"
 ```
+*Expected Output: `Ran 76 tests in ~3.2s — OK` (100% passing).*
 
-### 9. Launch Streamlit Application
+### 3. Launch Local Streamlit Platform
 ```bash
 streamlit run app.py
 ```
+*Platform opens automatically at `http://localhost:8501`.*
 
-### 10. Run Jupyter Notebooks
-- **Phase 2 EDA**: `notebooks/01_exploratory_data_analysis.ipynb`
-- **Phase 3 ML Clustering**: `notebooks/02_correlation_and_clustering.ipynb`
-- **Phase 4 Recommendation Engine**: `notebooks/03_recommendation_engine.ipynb`
+### 4. Run via Docker Containerization
+```bash
+# Build Docker image
+docker build -t sonic-atlas:latest .
+
+# Run container
+docker run -p 8501:8501 --name sonic_atlas_app sonic-atlas:latest
+
+# Or launch via Docker Compose
+docker compose up -d
+```
+*Verify container health: `curl -f http://localhost:8501/_stcore/health`.*
 
 ---
 
@@ -329,4 +278,14 @@ streamlit run app.py
 | **Phase 2** | **Preprocessing & EDA** | **Completed** | Non-destructive cleaning, missing metadata fallback, temporal feature extraction, comprehensive EDA, 14 figures, and 4 functional interactive app views. |
 | **Phase 3** | **Correlation & Clustering** | **Completed** | Pearson/Spearman collinearity, feature standardization, K-Means ($K=6$) optimization, 2D PCA, 6 archetype personas, 10 figures, serialized models, and Cluster Intelligence Streamlit view. |
 | **Phase 4** | **Recommendation Engine** | **Completed** | Unique catalog (28,356 tracks), cosine NearestNeighbors, 4 recommendation modes, hybrid filters, acoustic explanation engine, diversity reranking, and Recommendations Streamlit view. |
-| **Phase 5** | **Production Application** | **Next Phase** | Production deployment, interactive radar charts, batch comparison tools, and performance optimizations. |
+| **Phase 5** | **Advanced Intelligence & Delivery** | **Completed** | Multi-Track Comparison Studio, Playlist Intelligence, Catalog Intelligence, Docker containerization, 18-slide PowerPoint deck, 76 unit tests, and production release. |
+
+---
+
+## 13. Project Deliverables Index
+
+- **Final Presentation Deck**: [`reports/SONIC_ATLAS_FINAL_PRESENTATION.pptx`](file:///Users/av/Documents/corizo%20Ai%20major%20project/Spotify-Genre-Segmentation/reports/SONIC_ATLAS_FINAL_PRESENTATION.pptx)
+- **Demonstration Guide**: [`reports/PROJECT_DEMONSTRATION_GUIDE.md`](file:///Users/av/Documents/corizo%20Ai%20major%20project/Spotify-Genre-Segmentation/reports/PROJECT_DEMONSTRATION_GUIDE.md)
+- **System Architecture**: [`reports/SYSTEM_ARCHITECTURE.md`](file:///Users/av/Documents/corizo%20Ai%20major%20project/Spotify-Genre-Segmentation/reports/SYSTEM_ARCHITECTURE.md)
+- **Phase 5 Completion Report**: [`reports/PHASE_5_COMPLETION_REPORT.md`](file:///Users/av/Documents/corizo%20Ai%20major%20project/Spotify-Genre-Segmentation/reports/PHASE_5_COMPLETION_REPORT.md)
+- **Final Project Report**: [`reports/SONIC_ATLAS_FINAL_PROJECT_REPORT.md`](file:///Users/av/Documents/corizo%20Ai%20major%20project/Spotify-Genre-Segmentation/reports/SONIC_ATLAS_FINAL_PROJECT_REPORT.md)

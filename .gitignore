@@ -53,3 +53,9 @@ Thumbs.db
 
 # Streamlit temporary / config cache
 .streamlit/secrets.toml
+
+# User upload caches / temporary exports
+*.tmp
+temp_uploads/
+
+

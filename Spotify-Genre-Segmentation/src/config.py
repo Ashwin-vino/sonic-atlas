@@ -5,7 +5,7 @@ feature classifications, and professional design system tokens.
 """
 
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict, List, Tuple
 
 # ==============================================================================
 # 1. PATH CONFIGURATION
@@ -57,6 +57,56 @@ RECOMMENDATION_MODES: Dict[str, str] = {
 
 RECOMMENDATION_TOP_K_OPTIONS: List[int] = [5, 10, 15, 20]
 DEFAULT_CANDIDATE_POOL_SIZE: int = 250
+
+# Phase 5 Artifacts & Report Paths
+PRESENTATION_FILENAME = "SONIC_ATLAS_FINAL_PRESENTATION.pptx"
+PRESENTATION_PATH = REPORTS_DIR / PRESENTATION_FILENAME
+DEMONSTRATION_GUIDE_PATH = REPORTS_DIR / "PROJECT_DEMONSTRATION_GUIDE.md"
+SYSTEM_ARCHITECTURE_PATH = REPORTS_DIR / "SYSTEM_ARCHITECTURE.md"
+PHASE_5_COMPLETION_REPORT_PATH = REPORTS_DIR / "PHASE_5_COMPLETION_REPORT.md"
+FINAL_PROJECT_REPORT_PATH = REPORTS_DIR / "SONIC_ATLAS_FINAL_PROJECT_REPORT.md"
+
+# Phase 5 Upload & Analysis Limits
+MAX_UPLOAD_SIZE_MB: int = 10
+TRACK_COMPARISON_MIN: int = 2
+TRACK_COMPARISON_MAX: int = 5
+
+# Color sequence for multi-track comparisons (distinct, elegant, restrained)
+TRACK_COMPARISON_COLORS: List[str] = [
+    "#55D99A",  # Primary green
+    "#E9B86C",  # Amber gold
+    "#5BC0BE",  # Clean teal
+    "#D97755",  # Warm terracotta
+    "#B388FF",  # Soft lavender / orchid
+]
+
+# Normalization boundaries for 10 continuous audio features on radar/spider charts
+# Maps raw domain to [0, 1] for visual multi-dimensional comparison
+RADAR_FEATURE_BOUNDS: Dict[str, Tuple[float, float]] = {
+    "danceability": (0.0, 1.0),
+    "energy": (0.0, 1.0),
+    "loudness": (-30.0, 0.0),       # Clamped from -30 dB (quiet) to 0 dB (max loudness)
+    "speechiness": (0.0, 1.0),
+    "acousticness": (0.0, 1.0),
+    "instrumentalness": (0.0, 1.0),
+    "liveness": (0.0, 1.0),
+    "valence": (0.0, 1.0),
+    "tempo": (50.0, 200.0),          # Clamped from 50 BPM to 200 BPM
+    "duration_ms": (60000.0, 480000.0),  # 1 min to 8 mins
+}
+
+# Complete 9-view application navigation
+NAVIGATION_PAGES: List[str] = [
+    "Overview",
+    "Music Explorer",
+    "Genre Analysis",
+    "Data Insights",
+    "Cluster Intelligence",
+    "Recommendations",
+    "Track Comparison",
+    "Playlist Intelligence",
+    "Catalog Intelligence",
+]
 
 # ==============================================================================
 # 2. REPRODUCIBILITY & DATASET SCHEMA
